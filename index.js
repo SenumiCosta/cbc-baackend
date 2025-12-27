@@ -1,0 +1,72 @@
+import express from 'express';
+import bodyParser from 'body-parser'; 
+import mongoose from 'mongoose';
+import Student from './models/student.js';
+import studentRouter from './routes/studentrouter.js';
+import productsRouter from './routes/productsrouter.js';
+import userRouter from './routes/userRouter.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+dotenv.config();
+const app = express();
+
+const mongoUrl=process.env.MONGO_DB_URI;
+mongoose.connect(mongoUrl,{})
+const connection=mongoose.connection;
+connection.once('open',()=>{
+  console.log("MongoDB database connection established successfully");
+})
+
+app.use(bodyParser.json())
+app.use(
+  (req, res, next) => {
+   const token= req.header("Authorization")?.replace("Bearer ","")
+   console.log(token);
+    if(token!=null){
+      jwt.verify(token,process.env.SECRET_KEY,(err,decoded)=>{
+        if(!err){
+         console.log(decoded);
+         req.user=decoded;
+        }
+      })
+    }
+    next();
+  }
+                                                             
+)
+app.use('/students',studentRouter);
+app.use('/products',productsRouter);
+app.use('/users',userRouter);
+
+
+app.get("/",
+  (req,res)=>{
+    console.log() 
+    console.log(req.body) ;
+    console.log("this is a get request") ;
+    res.json({message:"hello world"})
+  }
+);
+
+app.post("/",
+  (req,res)=>{
+
+    const newStudent=new Student(req.body)
+    newStudent.save()
+    .then(()=>{
+      res.json({message:"student added successfully"})
+    })
+    
+      
+    
+
+
+    
+    
+  }
+)
+
+app.listen(5000, () => {
+  console.log('Server is running on port 5000');
+});
