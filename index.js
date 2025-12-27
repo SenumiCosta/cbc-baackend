@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 
 
 import userRouter from './routes/userRouter.js';
+import productsRouter from './routes/productRouter.js';
+import orderRouter from './routes/orderRouter.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
@@ -36,6 +38,8 @@ app.use(
 )
 
 app.use('/users',userRouter);
+app.use('/products',productsRouter);
+app.use('/orders',orderRouter);
 
 
 app.get("/",
