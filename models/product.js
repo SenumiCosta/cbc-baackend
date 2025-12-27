@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
-const productSchema=mongoose.Schema({
-    name:String,
-    price:Number,
-    category:String
+
+const productSchema= mongoose.Schema({
+    productId:{
+        
+    }
+
 })
 const Product=mongoose.model("Product",productSchema)
 export default Product;
