@@ -1,9 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser'; 
 import mongoose from 'mongoose';
-import Student from './models/student.js';
-import studentRouter from './routes/studentrouter.js';
-import productsRouter from './routes/productsrouter.js';
+
+
 import userRouter from './routes/userRouter.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -35,8 +34,7 @@ app.use(
   }
                                                              
 )
-app.use('/students',studentRouter);
-app.use('/products',productsRouter);
+
 app.use('/users',userRouter);
 
 
@@ -49,14 +47,7 @@ app.get("/",
   }
 );
 
-app.post("/",
-  (req,res)=>{
 
-    const newStudent=new Student(req.body)
-    newStudent.save()
-    .then(()=>{
-      res.json({message:"student added successfully"})
-    })
     
       
     
@@ -64,8 +55,8 @@ app.post("/",
 
     
     
-  }
-)
+  
+
 
 app.listen(5000, () => {
   console.log('Server is running on port 5000');
